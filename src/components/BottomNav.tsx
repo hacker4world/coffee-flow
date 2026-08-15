@@ -12,6 +12,8 @@ const BottomNav = () => {
     ? "menu"
     : location.pathname.startsWith("/cart")
     ? "cart"
+    : location.pathname.startsWith("/login")
+    ? "login"
     : "home";
 
   return (
@@ -93,6 +95,30 @@ const BottomNav = () => {
           className={`text-xs mt-1 ${currentTab === "cart" ? "text-amber-700 font-bold" : "text-stone-400"}`}
         >
           Order
+        </span>
+      </Link>
+
+      <Link
+        to="/login"
+        className="flex flex-col items-center p-1 w-20 active:scale-95 transition-transform"
+      >
+        <svg
+          className={`h-6 w-6 ${currentTab === "login" ? "text-amber-700" : "text-stone-400"}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+        <span
+          className={`text-xs mt-1 ${currentTab === "login" ? "text-amber-700 font-bold" : "text-stone-400"}`}
+        >
+          Login
         </span>
       </Link>
     </nav>

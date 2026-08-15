@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
+import BottomNav from "../components/BottomNav";
 
 // Resolve a selected option id back to its display name (e.g. "oat" -> "Oat").
 const optionName = (product, groupName, optionId) => {
@@ -226,6 +227,8 @@ const OrderPage = () => {
           </button>
         </div>
       </div>
+
+      <BottomNav />
     </div>
   );
 };
