@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
@@ -19,6 +19,40 @@ const ProductDetailPage = () => {
   // Optional note from the user.
   const [note, setNote] = useState("");
 
+  // Carousel state for the product image gallery.
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDragStart = (clientX) => {
+    startX.current = clientX;
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (clientX) => {
+    if (!isDragging) return;
+    setDragOffset(clientX - startX.current);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    const containerWidth = containerRef.current
+      ? containerRef.current.offsetWidth
+      : 0;
+    const threshold = containerWidth / 4;
+
+    if (dragOffset < -threshold && currentIndex < gallery.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else if (dragOffset > threshold && currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+    setDragOffset(0);
+  };
+
+  const transformValue = `translateX(calc(-${currentIndex * 100}% + ${dragOffset}px))`;
+
   if (!product) {
     return (
       <div className="relative w-full max-w-md mx-auto bg-stone-100 min-h-screen flex flex-col items-center justify-center px-6">
@@ -38,6 +72,14 @@ const ProductDetailPage = () => {
   product.variants?.forEach((group) => {
     defaultOptions[group.name] = group.options[0].id;
   });
+
+  // Build a small gallery of images for the product (its own image + a couple
+  // of related coffee shots) so the carousel has multiple slides.
+  const gallery = [
+    product.image,
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?auto=format&fit=crop&w=1200&q=80",
+  ];
 
   const effectiveOptions = { ...defaultOptions, ...selectedOptions };
 
@@ -60,20 +102,46 @@ const ProductDetailPage = () => {
 
   return (
     <div className="relative w-full max-w-md mx-auto bg-gradient-to-b from-stone-100 to-amber-100 min-h-screen shadow-xl">
-      {/* Image hero with back button */}
-      <div className="relative h-80">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30"></div>
+      {/* Image carousel with back button */}
+      <div
+        ref={containerRef}
+        className="relative h-64 overflow-hidden select-none cursor-grab active:cursor-grabbing"
+        onMouseDown={(e) => handleDragStart(e.clientX)}
+        onMouseMove={(e) => handleDragMove(e.clientX)}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+        onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+        onTouchEnd={handleDragEnd}
+      >
+        <div
+          className="flex h-full"
+          style={{
+            transform: transformValue,
+            transition: isDragging ? "none" : "transform 0.5s ease-out",
+          }}
+        >
+          {gallery.map((image, index) => (
+            <div
+              key={index}
+              className="shrink-0 w-full h-full relative pointer-events-none"
+            >
+              <img
+                src={image}
+                alt={`${product.name} view ${index + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable="false"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20"></div>
+            </div>
+          ))}
+        </div>
 
         {/* Back button */}
         <button
           onClick={() => navigate(-1)}
           aria-label="Go back"
-          className="absolute top-4 left-4 p-2 rounded-full bg-black/40 text-white backdrop-blur-sm active:scale-90 transition-transform"
+          className="absolute top-4 left-4 p-2 rounded-full bg-black/40 text-white backdrop-blur-sm active:scale-90 transition-transform z-10"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +160,7 @@ const ProductDetailPage = () => {
         </button>
 
         {/* Category badge top-right */}
-        <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold">
+        <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold z-10">
           {product.categoryId === 1
             ? "☕ Espresso"
             : product.categoryId === 2
@@ -100,28 +168,59 @@ const ProductDetailPage = () => {
             : "🍵 Tea"}
         </span>
 
-        {/* Overlaid info card at the bottom of the image */}
-        <div className="absolute bottom-0 left-0 right-0 p-5">
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg px-4 py-3 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-display font-bold text-stone-800 tracking-tight leading-tight">
-                {product.name}
-              </h1>
-              <p className="text-xs text-stone-500 mt-0.5">
-                {product.description}
-              </p>
-            </div>
-            <span className="text-amber-700 font-bold text-lg whitespace-nowrap ml-3">
-              {unitPrice.toFixed(2)} TND
+        {/* Product name badge at the bottom of the image */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+          <span className="inline-block bg-white/95 backdrop-blur-md rounded-full px-4 py-1.5 shadow-lg">
+            <span className="text-base font-display font-bold text-stone-800 tracking-tight">
+              {product.name}
             </span>
-          </div>
+          </span>
+        </div>
+
+        {/* Pagination dots */}
+        <div className="absolute bottom-3 right-4 z-10 flex items-center gap-1.5">
+          {gallery.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                currentIndex === index ? "w-4 bg-white" : "w-1.5 bg-white/50"
+              }`}
+            />
+          ))}
         </div>
       </div>
 
       {/* Info + variants */}
       <div className="px-5 py-5 pb-32">
+        {/* Description card */}
+        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3">
+          <div className="flex items-center gap-2 mb-1.5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 text-amber-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+              />
+            </svg>
+            <span className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+              Description
+            </span>
+          </div>
+          <p className="text-stone-600 leading-relaxed text-sm">
+            {product.description}
+          </p>
+        </div>
+
         {/* Price card */}
-        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3 flex items-center justify-between">
+        <div className="mt-3 bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-stone-500">Unit price</span>
           <span className="text-amber-700 font-bold text-xl">
             {unitPrice.toFixed(2)} TND
@@ -186,17 +285,17 @@ const ProductDetailPage = () => {
 
       {/* Sticky add-to-order bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="max-w-md mx-auto bg-white border-t border-stone-200 px-5 py-4 flex items-center gap-4">
+        <div className="max-w-md mx-auto bg-white border-t border-stone-200 px-4 py-3 flex items-center gap-3">
           {/* Quantity stepper */}
-          <div className="flex items-center gap-3 bg-stone-100 rounded-full px-2 py-1">
+          <div className="flex items-center gap-2 bg-stone-100 rounded-full px-1.5 py-1">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               aria-label="Decrease quantity"
-              className="h-8 w-8 rounded-full bg-white text-stone-700 flex items-center justify-center active:scale-90 transition-transform"
+              className="h-7 w-7 rounded-full bg-white text-stone-700 flex items-center justify-center active:scale-90 transition-transform"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
+                className="h-3.5 w-3.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -205,7 +304,7 @@ const ProductDetailPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
               </svg>
             </button>
-            <span className="w-6 text-center font-bold text-stone-800">
+            <span className="w-5 text-center font-bold text-stone-800 text-sm">
               {quantity}
             </span>
             <button
@@ -213,11 +312,11 @@ const ProductDetailPage = () => {
                 setQuantity((q) => Math.min(MAX_QUANTITY, q + 1))
               }
               aria-label="Increase quantity"
-              className="h-8 w-8 rounded-full bg-white text-stone-700 flex items-center justify-center active:scale-90 transition-transform"
+              className="h-7 w-7 rounded-full bg-white text-stone-700 flex items-center justify-center active:scale-90 transition-transform"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
+                className="h-3.5 w-3.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -231,7 +330,7 @@ const ProductDetailPage = () => {
           {/* Add button */}
           <button
             onClick={handleAdd}
-            className={`flex-1 py-3 rounded-full font-bold text-white transition-colors ${
+            className={`flex-1 py-2.5 rounded-full font-bold text-sm text-white transition-colors ${
               added ? "bg-green-600" : "bg-amber-700"
             }`}
           >
