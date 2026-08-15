@@ -4,11 +4,16 @@ import { categories } from "../data/coffeeData";
 import { products } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import BottomNav from "../components/BottomNav";
+import { useCart } from "../context/CartContext";
 
 const MenuPage = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const [view, setView] = useState("list"); // "list" | "grid"
+  const { items } = useCart();
+
+  // Set of product ids currently in the cart.
+  const cartProductIds = new Set(items.map((item) => item.product.id));
 
   // Selected category from the URL (if any). "all" shows every product.
   const activeCategoryId = categoryId ? Number(categoryId) : "all";
@@ -141,13 +146,23 @@ const MenuPage = () => {
         {view === "grid" ? (
           <div className="grid grid-cols-2 gap-3">
             {visibleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} variant="grid" />
+              <ProductCard
+                key={product.id}
+                product={product}
+                variant="grid"
+                inCart={cartProductIds.has(product.id)}
+              />
             ))}
           </div>
         ) : (
           <div className="space-y-3">
             {visibleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} variant="list" />
+              <ProductCard
+                key={product.id}
+                product={product}
+                variant="list"
+                inCart={cartProductIds.has(product.id)}
+              />
             ))}
           </div>
         )}

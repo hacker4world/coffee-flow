@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 // Reusable product card. Renders either a horizontal list row ("list") or a
 // vertical card ("grid") depending on the `variant` prop.
-const ProductCard = ({ product, variant = "list" }) => {
+const ProductCard = ({ product, variant = "list", inCart = false }) => {
   const addButton = (
     <button
       aria-label={`Add ${product.name} to order`}
@@ -22,6 +22,12 @@ const ProductCard = ({ product, variant = "list" }) => {
     </button>
   );
 
+  const inCartBadge = inCart && (
+    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-bold shadow-md z-10">
+      ✓ In cart
+    </span>
+  );
+
   if (variant === "grid") {
     return (
       <Link
@@ -36,6 +42,7 @@ const ProductCard = ({ product, variant = "list" }) => {
         />
         {/* Floating add button over the image */}
         <div className="absolute top-2 right-2">{addButton}</div>
+        {inCartBadge}
 
         {/* Text content */}
         <div className="p-3">
@@ -59,11 +66,14 @@ const ProductCard = ({ product, variant = "list" }) => {
       to={`/product/${product.id}`}
       className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-sm ring-1 ring-stone-100 block"
     >
-      <img
-        src={product.image}
-        alt={product.name}
-        className="h-20 w-20 rounded-xl object-cover flex-shrink-0"
-      />
+      <div className="relative flex-shrink-0">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-20 w-20 rounded-xl object-cover"
+        />
+        {inCartBadge}
+      </div>
       <div className="flex-1 min-w-0">
         <h3 className="font-display font-bold text-stone-800 tracking-tight">
           {product.name}

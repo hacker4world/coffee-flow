@@ -32,6 +32,12 @@ interface CartContextValue {
   ) => void;
   updateQuantity: (index: number, quantity: number) => void;
   removeItem: (index: number) => void;
+  updateItem: (
+    index: number,
+    selectedOptions: Record<string, string>,
+    quantity: number,
+    note?: string
+  ) => void;
   clearCart: () => void;
   totalCount: number;
   totalPrice: number;
@@ -91,6 +97,27 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Update an existing line item's options, quantity and note in place.
+  const updateItem = (
+    index: number,
+    selectedOptions: Record<string, string>,
+    quantity: number,
+    note?: string
+  ) => {
+    setItems((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              selectedOptions,
+              quantity: Math.min(Math.max(quantity, 1), MAX_QUANTITY),
+              note,
+            }
+          : item
+      )
+    );
+  };
+
   // Clear the entire cart.
   const clearCart = () => setItems([]);
 
@@ -116,6 +143,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         addItem,
         updateQuantity,
         removeItem,
+        updateItem,
         clearCart,
         totalCount,
         totalPrice,

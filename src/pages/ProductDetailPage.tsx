@@ -1,14 +1,30 @@
-import React, { useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
-  const { addItem } = useCart();
+  const [searchParams] = useSearchParams();
+  const { addItem, updateItem, items } = useCart();
 
   const product = products.find((p) => p.id === Number(productId));
+
+  // Determine which cart line (if any) this product maps to for editing.
+  // Priority: an explicit `edit` query param, otherwise the first cart line
+  // that matches this product (so re-entering from the list page edits it).
+  const editParam = searchParams.get("edit");
+  const productCartIndex = items.findIndex(
+    (item) => item.product.id === Number(productId)
+  );
+  const editingIndex =
+    editParam !== null
+      ? Number(editParam)
+      : productCartIndex !== -1
+      ? productCartIndex
+      : null;
+  const editingItem = editingIndex !== null ? items[editingIndex] : undefined;
 
   // Selected option per variant group, keyed by group name.
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -25,6 +41,15 @@ const ProductDetailPage = () => {
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // When editing an existing cart line, pre-populate the form with its values.
+  useEffect(() => {
+    if (editingItem) {
+      setSelectedOptions(editingItem.selectedOptions);
+      setQuantity(editingItem.quantity);
+      setNote(editingItem.note ?? "");
+    }
+  }, [editingItem]);
 
   const handleDragStart = (clientX) => {
     startX.current = clientX;
@@ -95,6 +120,17 @@ const ProductDetailPage = () => {
   const subtotal = unitPrice * quantity;
 
   const handleAdd = () => {
+    if (editingItem && editingIndex !== null) {
+      updateItem(
+        editingIndex,
+        effectiveOptions,
+        quantity,
+        note.trim() || undefined
+      );
+      // Return to the order page after updating.
+      navigate("/cart");
+      return;
+    }
     addItem(product, effectiveOptions, quantity, note.trim() || undefined);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -139,8 +175,8 @@ const ProductDetailPage = () => {
 
         {/* Back button */}
         <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
+          onClick={() => navigate("/menu")}
+          aria-label="Go back to menu"
           className="absolute top-4 left-4 p-2 rounded-full bg-black/40 text-white backdrop-blur-sm active:scale-90 transition-transform z-10"
         >
           <svg
@@ -167,6 +203,13 @@ const ProductDetailPage = () => {
             ? "🧊 Cold Brew"
             : "🍵 Tea"}
         </span>
+
+        {/* In-cart indicator */}
+        {editingItem && (
+          <span className="absolute top-4 left-16 px-3 py-1 rounded-full bg-amber-600 text-white text-xs font-semibold z-10 shadow-md">
+            ✓ In cart
+          </span>
+        )}
 
         {/* Product name badge at the bottom of the image */}
         <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
@@ -327,14 +370,18 @@ const ProductDetailPage = () => {
             </button>
           </div>
 
-          {/* Add button */}
+          {/* Add / Update button */}
           <button
             onClick={handleAdd}
             className={`flex-1 py-2.5 rounded-full font-bold text-sm text-white transition-colors ${
               added ? "bg-green-600" : "bg-amber-700"
             }`}
           >
-            {added ? "Added ✓" : `Add to Order · ${subtotal.toFixed(2)} TND`}
+            {editingItem
+              ? `Update Order · ${subtotal.toFixed(2)} TND`
+              : added
+              ? "Added ✓"
+              : `Add to Order · ${subtotal.toFixed(2)} TND`}
           </button>
         </div>
       </div>
