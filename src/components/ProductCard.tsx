@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Reusable product card. Renders either a horizontal list row ("list") or a
 // vertical card ("grid") depending on the `variant` prop.
@@ -23,7 +24,10 @@ const ProductCard = ({ product, variant = "list" }) => {
 
   if (variant === "grid") {
     return (
-      <div className="relative bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-stone-100 active:scale-[0.98] transition-transform">
+      <Link
+        to={`/product/${product.id}`}
+        className="relative bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-stone-100 active:scale-[0.98] transition-transform block"
+      >
         {/* Image fills the top of the card */}
         <img
           src={product.image}
@@ -45,13 +49,16 @@ const ProductCard = ({ product, variant = "list" }) => {
             {product.price.toFixed(2)} TND
           </p>
         </div>
-      </div>
+      </Link>
     );
   }
 
   // Default: horizontal list row
   return (
-    <div className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-sm ring-1 ring-stone-100">
+    <Link
+      to={`/product/${product.id}`}
+      className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-sm ring-1 ring-stone-100 block"
+    >
       <img
         src={product.image}
         alt={product.name}
@@ -69,7 +76,7 @@ const ProductCard = ({ product, variant = "list" }) => {
         </p>
       </div>
       {addButton}
-    </div>
+    </Link>
   );
 };
 
