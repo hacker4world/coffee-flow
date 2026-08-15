@@ -41,7 +41,6 @@ const BottomNav = () => {
 
       <Link
         to="/menu"
-        onClick={() => setActiveTab("menu")}
         className="flex flex-col items-center p-1 w-20 active:scale-95 transition-transform"
       >
         <svg
