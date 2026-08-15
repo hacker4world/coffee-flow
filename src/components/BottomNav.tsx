@@ -1,8 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const BottomNav = () => {
   const location = useLocation();
+  const { totalCount } = useCart();
 
   // Derive the active tab from the current route so the highlight stays in
   // sync with navigation (e.g. /menu highlights "Menu").
@@ -67,19 +69,26 @@ const BottomNav = () => {
         to="/cart"
         className="flex flex-col items-center p-1 w-20 active:scale-95 transition-transform"
       >
-        <svg
-          className={`h-6 w-6 ${currentTab === "cart" ? "text-amber-700" : "text-stone-400"}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
+        <div className="relative">
+          <svg
+            className={`h-6 w-6 ${currentTab === "cart" ? "text-amber-700" : "text-stone-400"}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          {totalCount > 0 && (
+            <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-600 text-white text-[10px] font-bold flex items-center justify-center">
+              {totalCount}
+            </span>
+          )}
+        </div>
         <span
           className={`text-xs mt-1 ${currentTab === "cart" ? "text-amber-700 font-bold" : "text-stone-400"}`}
         >
