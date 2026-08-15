@@ -61,13 +61,15 @@ const ProductDetailPage = () => {
   return (
     <div className="relative w-full max-w-md mx-auto bg-gradient-to-b from-stone-100 to-amber-100 min-h-screen shadow-xl">
       {/* Image hero with back button */}
-      <div className="relative h-72">
+      <div className="relative h-80">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30"></div>
+
+        {/* Back button */}
         <button
           onClick={() => navigate(-1)}
           aria-label="Go back"
@@ -88,29 +90,38 @@ const ProductDetailPage = () => {
             />
           </svg>
         </button>
+
+        {/* Category badge top-right */}
+        <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold">
+          {product.categoryId === 1
+            ? "☕ Espresso"
+            : product.categoryId === 2
+            ? "🧊 Cold Brew"
+            : "🍵 Tea"}
+        </span>
+
+        {/* Overlaid info card at the bottom of the image */}
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg px-4 py-3 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-display font-bold text-stone-800 tracking-tight leading-tight">
+                {product.name}
+              </h1>
+              <p className="text-xs text-stone-500 mt-0.5">
+                {product.description}
+              </p>
+            </div>
+            <span className="text-amber-700 font-bold text-lg whitespace-nowrap ml-3">
+              {unitPrice.toFixed(2)} TND
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Info + variants */}
       <div className="px-5 py-5 pb-32">
-        {/* Category chip + name */}
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold">
-            {product.categoryId === 1
-              ? "☕ Espresso"
-              : product.categoryId === 2
-              ? "🧊 Cold Brew"
-              : "🍵 Tea"}
-          </span>
-        </div>
-        <h1 className="text-2xl font-display font-bold text-stone-800 tracking-tight mt-2">
-          {product.name}
-        </h1>
-        <p className="text-stone-500 mt-1 leading-relaxed">
-          {product.description}
-        </p>
-
         {/* Price card */}
-        <div className="mt-4 bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3 flex items-center justify-between">
+        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-stone-500">Unit price</span>
           <span className="text-amber-700 font-bold text-xl">
             {unitPrice.toFixed(2)} TND
