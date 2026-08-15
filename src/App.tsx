@@ -2,6 +2,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import MenuPage from "./pages/MenuPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import OrderPage from "./pages/OrderPage";
@@ -14,6 +15,7 @@ const App = () => {
     <div className="relative">
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/menu/:categoryId" element={<MenuPage />} />
         <Route path="/product/:productId" element={<ProductDetailPage />} />
