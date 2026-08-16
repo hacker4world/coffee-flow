@@ -112,271 +112,189 @@ export const products: Product[] = [
   {
     id: 201,
     categoryId: 2,
-    name: "Classic Cold Brew",
-    price: 5.0,
+    name: "Jus citron",
+    price: 7.0,
     image:
-      "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=80",
-    description: "Slow-steeped for 18 hours, served over ice.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Sweetness",
-        options: [
-          { id: "unsweetened", name: "Unsweetened", priceDelta: 0 },
-          { id: "vanilla", name: "Vanilla", priceDelta: 0 },
-          { id: "caramel", name: "Caramel", priceDelta: 0.3 },
-        ],
-      },
-    ],
+      "https://img.magnific.com/free-photo/glass-cup-fresh-lemon-juice-wooden-board_114579-53580.jpg",
+    description: "Jus de citron frais et rafraîchissant.",
+    variants: [],
   },
   {
     id: 202,
     categoryId: 2,
-    name: "Iced Caramel Latte",
-    price: 5.5,
+    name: "Jus de fraise",
+    price: 7.0,
     image:
-      "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=300&q=80",
-    description: "Chilled espresso, milk and caramel over ice.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Milk",
-        options: [
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
-          { id: "almond", name: "Almond", priceDelta: 0.5 },
-        ],
-      },
-    ],
-  },
-  {
-    id: 203,
-    categoryId: 2,
-    name: "Nitro Cold Brew",
-    price: 6.0,
-    image:
-      "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=300&q=80",
-    description: "Cold brew infused with nitrogen for a creamy cascade.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Sweetness",
-        options: [
-          { id: "unsweetened", name: "Unsweetened", priceDelta: 0 },
-          { id: "vanilla", name: "Vanilla", priceDelta: 0 },
-          { id: "caramel", name: "Caramel", priceDelta: 0.3 },
-        ],
-      },
-    ],
-  },
-  {
-    id: 204,
-    categoryId: 2,
-    name: "Iced Matcha Latte",
-    price: 5.8,
-    image:
-      "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=300&q=80",
-    description: "Ceremonial matcha whisked with cold milk and ice.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Milk",
-        options: [
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
-          { id: "almond", name: "Almond", priceDelta: 0.5 },
-        ],
-      },
-    ],
-  },
-  {
-    id: 205,
-    categoryId: 2,
-    name: "Cold Brew Tonic",
-    price: 5.2,
-    image:
-      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=300&q=80",
-    description: "Cold brew topped with sparkling tonic and a citrus twist.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Citrus",
-        options: [
-          { id: "lemon", name: "Lemon", priceDelta: 0 },
-          { id: "orange", name: "Orange", priceDelta: 0 },
-          { id: "grapefruit", name: "Grapefruit", priceDelta: 0.2 },
-        ],
-      },
-    ],
+      "https://media.istockphoto.com/id/178416773/photo/some-glasses-with-strawberry-liqueur.jpg?s=612x612&w=0&k=20&c=wo7eqLKBOV-FQZ15Lo7A3RMLPAdvwbkVPqlZm_GM9pc=",
+    description: "Jus de fraise naturellement sucré.",
+    variants: [],
   },
 
-  // ── Artisan Teas (categoryId: 3) ─────────────────────────────────────
+  // ── Repas (categoryId: 3) ─────────────────────────────────────────────
   {
-    id: 301,
+    id: 306,
     categoryId: 3,
-    name: "Jasmine Green Tea",
-    price: 3.0,
+    name: "Pizza Neptune",
+    price: 8.0,
     image:
-      "https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?auto=format&fit=crop&w=300&q=80",
-    description: "Fragrant green tea scented with fresh jasmine blossoms.",
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80",
+    description: "Pizza au fromage avec garniture de fruits de mer.",
     variants: [
       {
-        name: "Size",
+        name: "Taille",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Sweetener",
-        options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "honey", name: "Honey", priceDelta: 0.3 },
-          { id: "sugar", name: "Sugar", priceDelta: 0 },
+          { id: "mini", name: "Mini", priceDelta: 0 },
+          { id: "moyenne", name: "Moyenne", priceDelta: 1.5 },
+          { id: "large", name: "Large", priceDelta: 3.0 },
         ],
       },
     ],
   },
   {
-    id: 302,
+    id: 307,
     categoryId: 3,
-    name: "Earl Grey",
-    price: 3.2,
+    name: "Makloub Escalope",
+    price: 9.5,
     image:
-      "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=300&q=80",
-    description: "Black tea with a bright note of bergamot oil.",
+      "https://linstant-m.tn/uploads/24421169fb9888577a04c3e6a86da23d5d73b587.jpg",
+    description: "Makloub à l'escalope avec légumes et sauce.",
     variants: [
       {
-        name: "Size",
+        name: "Sauce",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Milk",
-        options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
+          { id: "mayonnaise", name: "Mayonnaise", priceDelta: 0 },
+          { id: "barbecue", name: "Sauce barbecue", priceDelta: 0 },
+          { id: "ketchup", name: "Ketchup", priceDelta: 0 },
         ],
       },
     ],
   },
   {
-    id: 303,
+    id: 308,
     categoryId: 3,
-    name: "Chamomile Bloom",
-    price: 3.4,
+    name: "Panini",
+    price: 6.5,
     image:
-      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=300&q=80",
-    description: "Calming chamomile flowers with a hint of honey.",
+      "https://cdn.shopify.com/s/files/1/0173/8181/8422/files/20241003170904-chicken-2c-20mozzarella-2c-20-26-20kale-20pesto-20panini.jpg?v=1727975346&width=1600&height=900",
+    description: "Sandwich grillé avec vos choix de garnitures.",
+    variants: [],
+  },
+  {
+    id: 309,
+    categoryId: 4,
+    name: "Crepe chocolat",
+    price: 5.5,
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgGJLIciTCBClDVn5b_ASKaqclapFsxrZ_X9wFOtDBt1G_L7muvhR3CfM&s=10",
+    description: "Crêpe au chocolat avec sauce chocolat.",
+    variants: [],
+  },
+  {
+    id: 310,
+    categoryId: 4,
+    name: "Gateau chocolat",
+    price: 6.0,
+    image:
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=80",
+    description: "Gâteau au chocolat moelleux.",
+    variants: [],
+  },
+  {
+    id: 311,
+    categoryId: 4,
+    name: "Tiramisu",
+    price: 6.5,
+    image:
+      "https://www.cakesperiments.com/wp-content/uploads/2025/05/Tiramisu-9-1024x1536.jpg",
+    description: "Tiramisu italien à la caféine.",
+    variants: [],
+  },
+  {
+    id: 312,
+    categoryId: 5,
+    name: "Chicha menthe",
+    price: 10.0,
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUfnkFbHvJ4bght_qVPblGTSYHRcZRjhXskqPZwbIjx4eAV_7GiUW6RR&s=10",
+    description: "Chicha à la menthe fraîche.",
     variants: [
       {
-        name: "Size",
+        name: "Type",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Sweetener",
-        options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "honey", name: "Honey", priceDelta: 0.3 },
-          { id: "sugar", name: "Sugar", priceDelta: 0 },
+          { id: "normal", name: "Normal", priceDelta: 0 },
+          { id: "ice", name: "Avec glace", priceDelta: 3.0 },
         ],
       },
     ],
   },
   {
-    id: 304,
-    categoryId: 3,
-    name: "Moroccan Mint",
-    price: 3.5,
+    id: 313,
+    categoryId: 5,
+    name: "Chicha pomme",
+    price: 10.0,
     image:
-      "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=300&q=80",
-    description: "Gunpowder green tea blended with fresh spearmint.",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUfnkFbHvJ4bght_qVPblGTSYHRcZRjhXskqPZwbIjx4eAV_7GiUW6RR&s=10",
+    description: "Chicha au parfum pomme.",
     variants: [
       {
-        name: "Size",
+        name: "Type",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Sweetener",
-        options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "honey", name: "Honey", priceDelta: 0.3 },
-          { id: "sugar", name: "Sugar", priceDelta: 0 },
+          { id: "normal", name: "Normal", priceDelta: 0 },
+          { id: "ice", name: "Avec glace", priceDelta: 3.0 },
         ],
       },
     ],
   },
   {
-    id: 305,
-    categoryId: 3,
-    name: "Chai Spice",
-    price: 3.8,
+    id: 314,
+    categoryId: 5,
+    name: "Chicha love",
+    price: 13.0,
     image:
-      "https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?auto=format&fit=crop&w=300&q=80",
-    description: "Black tea simmered with cinnamon, cardamom and ginger.",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUfnkFbHvJ4bght_qVPblGTSYHRcZRjhXskqPZwbIjx4eAV_7GiUW6RR&s=10",
+    description: "Chicha aux fruits rouges.",
     variants: [
       {
-        name: "Size",
+        name: "Type",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
+          { id: "normal", name: "Normal", priceDelta: 0 },
+          { id: "ice", name: "Avec glace", priceDelta: 3.0 },
         ],
       },
+    ],
+  },
+  {
+    id: 315,
+    categoryId: 5,
+    name: "Chicha cookies",
+    price: 14.0,
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUfnkFbHvJ4bght_qVPblGTSYHRcZRjhXskqPZwbIjx4eAV_7GiUW6RR&s=10",
+    description: "Chicha au goût cookies.",
+    variants: [
       {
-        name: "Milk",
+        name: "Type",
         options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
+          { id: "normal", name: "Normal", priceDelta: 0 },
+          { id: "ice", name: "Avec glace", priceDelta: 3.0 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 316,
+    categoryId: 5,
+    name: "Chicha cocktail",
+    price: 15.0,
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUfnkFbHvJ4bght_qVPblGTSYHRcZRjhXskqPZwbIjx4eAV_7GiUW6RR&s=10",
+    description: "Chicha cocktail exotique.",
+    variants: [
+      {
+        name: "Type",
+        options: [
+          { id: "normal", name: "Normal", priceDelta: 0 },
+          { id: "ice", name: "Avec glace", priceDelta: 3.0 },
         ],
       },
     ],

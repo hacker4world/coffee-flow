@@ -36,7 +36,7 @@ const Header = () => {
               : "bg-black/40 text-white backdrop-blur-sm"
           }`}
         >
-          CoffeeFlow
+          Servio
         </h1>
         <div className="flex items-center gap-1">
           {/* Notifications bell — links to the notifications page */}
