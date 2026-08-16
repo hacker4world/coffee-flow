@@ -1,27 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
-
-const slides = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
-    title: "Good Morning",
-    subtitle: "Brewed fresh daily since 2024",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?auto=format&fit=crop&w=1200&q=80",
-    title: "Artisanal Craft",
-    subtitle: "Precision in every pour",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1200&q=80",
-    title: "Ethically Sourced",
-    subtitle: "From farm to your glass",
-  },
-];
+import { useLanguage } from "../i18n/LanguageContext";
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+
+  const slides = [
+    {
+      image:
+        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
+      title: t("hero.slide1.title"),
+      subtitle: t("hero.slide1.subtitle"),
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?auto=format&fit=crop&w=1200&q=80",
+      title: t("hero.slide2.title"),
+      subtitle: t("hero.slide2.subtitle"),
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=1200&q=80",
+      title: t("hero.slide3.title"),
+      subtitle: t("hero.slide3.subtitle"),
+    },
+  ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0); // Tracks live finger/mouse movement in pixels
   const [isDragging, setIsDragging] = useState(false);

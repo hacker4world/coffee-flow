@@ -2,12 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
+import MultiItemModal from "../components/MultiItemModal";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
   const { addItem, updateItem, items } = useCart();
+  const { t } = useLanguage();
 
   const product = products.find((p) => p.id === Number(productId));
 
@@ -34,6 +37,8 @@ const ProductDetailPage = () => {
   const [added, setAdded] = useState(false);
   // Optional note from the user.
   const [note, setNote] = useState("");
+  // Whether the multi-variant modal is open (when quantity > 1).
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Carousel state for the product image gallery.
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,7 +52,6 @@ const ProductDetailPage = () => {
     if (editingItem) {
       setSelectedOptions(editingItem.selectedOptions);
       setQuantity(editingItem.quantity);
-      setNote(editingItem.note ?? "");
     }
   }, [editingItem]);
 
@@ -120,6 +124,12 @@ const ProductDetailPage = () => {
   const subtotal = unitPrice * quantity;
 
   const handleAdd = () => {
+    // When ordering more than one unit, open the modal so the user can pick a
+    // variant for each individual item (e.g. 2 hot + 2 iced).
+    if (quantity > 1) {
+      setModalOpen(true);
+      return;
+    }
     if (editingItem && editingIndex !== null) {
       updateItem(
         editingIndex,
@@ -132,6 +142,19 @@ const ProductDetailPage = () => {
       return;
     }
     addItem(product, effectiveOptions, quantity, note.trim() || undefined);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  // Add each item from the modal as its own cart line (quantity 1 each), so
+  // different variants appear as separate products in the cart.
+  const handleModalAddToCart = (
+    items: Array<{ selectedOptions: Record<string, string>; note?: string }>
+  ) => {
+    items.forEach((item) => {
+      addItem(product, item.selectedOptions, 1, item.note?.trim() || undefined);
+    });
+    setModalOpen(false);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
@@ -176,7 +199,7 @@ const ProductDetailPage = () => {
         {/* Back button */}
         <button
           onClick={() => navigate("/menu")}
-          aria-label="Go back to menu"
+          aria-label={t("detail.goBackToMenu")}
           className="absolute top-4 left-4 p-2 rounded-full bg-black/40 text-white backdrop-blur-sm active:scale-90 transition-transform z-10"
         >
           <svg
@@ -207,9 +230,8 @@ const ProductDetailPage = () => {
         {/* In-cart indicator */}
         {editingItem && (
           <span className="absolute top-4 left-16 px-3 py-1 rounded-full bg-amber-600 text-white text-xs font-semibold z-10 shadow-md">
-            ✓ In cart
-          </span>
-        )}
+            {t("detail.inCart")}
+          </span>        )}
 
         {/* Product name badge at the bottom of the image */}
         <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
@@ -254,7 +276,7 @@ const ProductDetailPage = () => {
               />
             </svg>
             <span className="text-xs font-semibold uppercase tracking-wide text-stone-400">
-              Description
+              {t("detail.description")}
             </span>
           </div>
           <p className="text-stone-600 leading-relaxed text-sm">
@@ -264,7 +286,7 @@ const ProductDetailPage = () => {
 
         {/* Price card */}
         <div className="mt-3 bg-white rounded-2xl shadow-sm ring-1 ring-stone-100 px-4 py-3 flex items-center justify-between">
-          <span className="text-sm text-stone-500">Unit price</span>
+          <span className="text-sm text-stone-500">{t("detail.unitPrice")}</span>
           <span className="text-amber-700 font-bold text-xl">
             {unitPrice.toFixed(2)} TND
           </span>
@@ -310,20 +332,6 @@ const ProductDetailPage = () => {
             </div>
           </div>
         ))}
-
-        {/* Further details note */}
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold text-stone-700 mb-2">
-            Further details
-          </h3>
-          <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Any special requests? e.g. extra hot, less ice, no foam..."
-            rows={3}
-            className="w-full bg-white rounded-2xl ring-1 ring-stone-200 p-3 text-sm text-stone-700 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
-          />
-        </div>
       </div>
 
       {/* Sticky add-to-order bar */}
@@ -378,13 +386,22 @@ const ProductDetailPage = () => {
             }`}
           >
             {editingItem
-              ? `Update Order · ${subtotal.toFixed(2)} TND`
+              ? t("detail.updateOrder", { price: subtotal.toFixed(2) })
               : added
-              ? "Added ✓"
-              : `Add to Order · ${subtotal.toFixed(2)} TND`}
+              ? t("detail.added")
+              : t("detail.addToOrder", { price: subtotal.toFixed(2) })}
           </button>
         </div>
       </div>
+
+      {/* Multi-variant modal: shown when ordering more than one unit */}
+      <MultiItemModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        product={product}
+        initialCount={quantity}
+        onAddToCart={handleModalAddToCart}
+      />
     </div>
   );
 };

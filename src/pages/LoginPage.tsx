@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,15 +18,15 @@ const LoginPage = () => {
     const newErrors: { username?: string; password?: string } = {};
 
     if (!formData.username.trim()) {
-      newErrors.username = "Username is required";
+      newErrors.username = t("login.usernameRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.username)) {
-      newErrors.username = "Please enter a valid email";
+      newErrors.username = t("login.invalidEmail");
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t("login.passwordRequired");
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = t("login.passwordTooShort");
     }
 
     setErrors(newErrors);
@@ -46,12 +48,12 @@ const LoginPage = () => {
       setIsLoading(false);
       setMessage({
         type: "success",
-        text: "Login successful! Redirecting...",
+        text: t("login.loginSuccess"),
       });
 
       // Simulate redirect after success message
       setTimeout(() => {
-        navigate("/");
+        navigate("/admin");
       }, 1500);
     }, 1500);
   };
@@ -90,12 +92,12 @@ const LoginPage = () => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="font-medium">Back to Home</span>
+          <span className="font-medium">{t("login.backToHome")}</span>
         </button>
 
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-stone-800 mb-2">Welcome Back</h1>
-          <p className="text-stone-600">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-stone-800 mb-2">{t("login.welcomeBack")}</h1>
+          <p className="text-stone-600">{t("login.signInToAccount")}</p>
         </div>
       </div>
 
@@ -121,7 +123,7 @@ const LoginPage = () => {
                 htmlFor="username"
                 className="block text-sm font-medium text-stone-700 mb-2"
               >
-                Username or Email
+                {t("login.usernameOrEmail")}
               </label>
               <input
                 type="text"
@@ -129,7 +131,7 @@ const LoginPage = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="Enter your username or email"
+                placeholder={t("login.usernamePlaceholder")}
                 className={`w-full px-4 py-3 rounded-lg border ${
                   errors.username
                     ? "border-red-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -148,7 +150,7 @@ const LoginPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-stone-700 mb-2"
               >
-                Password
+                {t("login.password")}
               </label>
               <div className="relative">
                 <input
@@ -157,7 +159,7 @@ const LoginPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder={t("login.passwordPlaceholder")}
                   className={`w-full px-4 py-3 pr-12 rounded-lg border ${
                     errors.password
                       ? "border-red-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -226,10 +228,10 @@ const LoginPage = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>Signing in...</span>
+                  <span>{t("login.signingIn")}</span>
                 </>
               ) : (
-                <span>Sign In</span>
+                <span>{t("login.signIn")}</span>
               )}
             </button>
           </form>
@@ -241,7 +243,7 @@ const LoginPage = () => {
               className="text-stone-600 hover:text-stone-800 text-sm font-medium transition-colors"
               disabled={isLoading}
             >
-              Back to Home
+              {t("login.backToHome")}
             </button>
           </div>
         </div>

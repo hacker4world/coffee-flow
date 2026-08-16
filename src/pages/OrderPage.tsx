@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
-import BottomNav from "../components/BottomNav";
+import { useLanguage } from "../i18n/LanguageContext";
 
 // Resolve a selected option id back to its display name (e.g. "oat" -> "Oat").
 const optionName = (product, groupName, optionId) => {
@@ -12,22 +12,23 @@ const optionName = (product, groupName, optionId) => {
 const OrderPage = () => {
   const navigate = useNavigate();
   const { items, updateQuantity, removeItem, clearCart, totalPrice } = useCart();
+  const { t } = useLanguage();
 
   if (items.length === 0) {
     return (
       <div className="relative w-full max-w-md mx-auto bg-gradient-to-b from-stone-100 to-amber-100 min-h-screen shadow-xl flex flex-col items-center justify-center px-6">
         <div className="text-6xl mb-4">🛒</div>
         <h1 className="text-xl font-display font-bold text-stone-800">
-          Your order is empty
+          {t("order.emptyTitle")}
         </h1>
         <p className="text-stone-500 mt-1 text-center">
-          Add some coffee to get started.
+          {t("order.emptySubtitle")}
         </p>
         <Link
           to="/menu"
           className="mt-6 px-6 py-3 rounded-full bg-amber-700 text-white font-bold active:scale-95 transition-transform"
         >
-          Browse Menu
+          {t("order.browseMenu")}
         </Link>
       </div>
     );
@@ -60,10 +61,10 @@ const OrderPage = () => {
           </button>
           <div>
             <h1 className="text-lg font-display font-bold text-stone-800 tracking-tight leading-tight">
-              Your Order
+              {t("order.yourOrder")}
             </h1>
             <p className="text-xs text-stone-500">
-              {items.length} {items.length === 1 ? "item" : "items"}
+              {t("order.items", { count: items.length })}
             </p>
           </div>
         </div>
@@ -112,7 +113,7 @@ const OrderPage = () => {
                   </button>
                   <button
                     onClick={() => removeItem(index)}
-                    aria-label={`Remove ${item.product.name}`}
+                    aria-label={t("order.remove", { name: item.product.name })}
                     className="text-stone-400 hover:text-red-500 active:scale-90 transition-colors flex-shrink-0"
                   >
                     <svg
@@ -223,12 +224,11 @@ const OrderPage = () => {
             }}
             className="w-full py-3 rounded-full bg-amber-700 text-white font-bold active:scale-[0.98] transition-transform"
           >
-            Confirm Order
+            {t("order.confirmOrder")}
           </button>
         </div>
       </div>
 
-      <BottomNav />
     </div>
   );
 };

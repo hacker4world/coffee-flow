@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const OrderConfirmedPage = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // After a short pause, fade out and return to the home screen.
   useEffect(() => {
@@ -53,10 +55,10 @@ const OrderConfirmedPage = () => {
       </div>
 
       <h1 className="text-2xl font-display font-bold text-stone-800 tracking-tight mt-6">
-        Order Confirmed!
+        {t("confirmed.title")}
       </h1>
       <p className="text-stone-500 mt-2 text-center">
-        Thank you! Your coffee is being prepared. ☕
+        {t("confirmed.subtitle")}
       </p>
     </div>
   );

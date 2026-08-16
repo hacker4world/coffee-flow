@@ -1,8 +1,10 @@
 import React from "react";
 import CategoryCard from "./CategoryCard";
 import { categories } from "../data/coffeeData";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const CategoryList = () => {
+  const { t } = useLanguage();
   return (
     // Cards are capped at a comfortable max-width and centered so they don't
     // stretch edge-to-edge on wide screens, while still filling mobile widths
@@ -18,7 +20,7 @@ const CategoryList = () => {
               <h2
                 className="text-xl font-display font-bold text-stone-800 tracking-tight"
               >
-                Explore Menu
+                {t("home.exploreMenu")}
               </h2>
             </div>
           </div>

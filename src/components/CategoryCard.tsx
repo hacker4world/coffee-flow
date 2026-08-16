@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const CategoryCard = ({ id, name, totalProducts, image, emoji }) => {
+  const { t } = useLanguage();
+
   return (
     // Full width card with relative positioning for the overlay
     <Link
@@ -36,7 +39,7 @@ const CategoryCard = ({ id, name, totalProducts, image, emoji }) => {
 
         {/* Circular arrow button to indicate clickability */}
         <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full flex items-center gap-1">
-          <span className="text-white text-sm font-semibold">View</span>
+          <span className="text-white text-sm font-semibold">{t("category.view")}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 text-white"

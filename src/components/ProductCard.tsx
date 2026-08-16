@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../i18n/LanguageContext";
 
 // Reusable product card. Renders either a horizontal list row ("list") or a
 // vertical card ("grid") depending on the `variant` prop.
 const ProductCard = ({ product, variant = "list", inCart = false }) => {
+  const { t } = useLanguage();
   const addButton = (
     <button
-      aria-label={`Add ${product.name} to order`}
+      aria-label={t("product.addToOrder", { name: product.name })}
       className="h-9 w-9 rounded-full bg-amber-700 text-white flex items-center justify-center active:scale-90 transition-transform flex-shrink-0"
     >
       <svg
@@ -24,10 +26,9 @@ const ProductCard = ({ product, variant = "list", inCart = false }) => {
 
   const inCartBadge = inCart && (
     <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-bold shadow-md z-10">
-      ✓ In cart
+      {t("product.inCart")}
     </span>
   );
-
   if (variant === "grid") {
     return (
       <Link

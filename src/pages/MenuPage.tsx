@@ -5,12 +5,14 @@ import { products } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import BottomNav from "../components/BottomNav";
 import { useCart } from "../context/CartContext";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const MenuPage = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const [view, setView] = useState("list"); // "list" | "grid"
   const { items } = useCart();
+  const { t } = useLanguage();
 
   // Set of product ids currently in the cart.
   const cartProductIds = new Set(items.map((item) => item.product.id));
@@ -35,7 +37,7 @@ const MenuPage = () => {
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => navigate(-1)}
-            aria-label="Go back"
+            aria-label={t("menu.goBack")}
             className="p-2 -ml-2 text-stone-600 active:scale-90 transition-transform"
           >
             <svg
@@ -55,7 +57,7 @@ const MenuPage = () => {
           </button>
           <div className="flex-1">
             <h1 className="text-lg font-display font-bold text-stone-800 tracking-tight leading-tight">
-              {activeCategory ? activeCategory.name : "Full Menu"}
+              {activeCategory ? activeCategory.name : t("menu.fullMenu")}
             </h1>
             <p className="text-xs text-stone-500">
               {visibleProducts.length} items
@@ -66,7 +68,7 @@ const MenuPage = () => {
           <div className="flex items-center bg-stone-200/70 rounded-full p-1">
             <button
               onClick={() => setView("list")}
-              aria-label="List view"
+              aria-label={t("menu.listView")}
               className={`p-1.5 rounded-full transition-colors ${
                 view === "list" ? "bg-white shadow" : "text-stone-500"
               }`}
@@ -88,7 +90,7 @@ const MenuPage = () => {
             </button>
             <button
               onClick={() => setView("grid")}
-              aria-label="Grid view"
+              aria-label={t("menu.gridView")}
               className={`p-1.5 rounded-full transition-colors ${
                 view === "grid" ? "bg-white shadow" : "text-stone-500"
               }`}
@@ -123,7 +125,7 @@ const MenuPage = () => {
                 : "bg-white text-stone-600 ring-1 ring-stone-200"
             }`}
           >
-            All
+            {t("menu.all")}
           </button>
           {categories.map((category) => (
             <button
