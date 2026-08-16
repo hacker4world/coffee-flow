@@ -4,6 +4,8 @@ import { tables as seedTables, type Table } from "../data/tables";
 interface TableContextValue {
   tables: Table[];
   addTable: (table: Omit<Table, "id">) => void;
+  updateTable: (id: number, table: Omit<Table, "id">) => void;
+  deleteTable: (id: number) => void;
 }
 
 const TableContext = createContext<TableContextValue | null>(null);
@@ -20,8 +22,18 @@ export const TableProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const updateTable = (id: number, table: Omit<Table, "id">) => {
+    setTables((prev) =>
+      prev.map((t) => (t.id === id ? { ...table, id } : t))
+    );
+  };
+
+  const deleteTable = (id: number) => {
+    setTables((prev) => prev.filter((t) => t.id !== id));
+  };
+
   return (
-    <TableContext.Provider value={{ tables, addTable }}>
+    <TableContext.Provider value={{ tables, addTable, updateTable, deleteTable }}>
       {children}
     </TableContext.Provider>
   );

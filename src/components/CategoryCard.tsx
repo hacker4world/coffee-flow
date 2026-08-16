@@ -34,7 +34,9 @@ const CategoryCard = ({ id, name, totalProducts, image, emoji }) => {
           >
             {name}
           </h3>
-          <p className="text-sm text-stone-200 mt-0.5">{totalProducts} items</p>
+          <p className="text-sm text-stone-200 mt-0.5">
+            {t("category.items", { count: totalProducts })}
+          </p>
         </div>
 
         {/* Circular arrow button to indicate clickability */}

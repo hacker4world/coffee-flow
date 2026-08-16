@@ -2,138 +2,110 @@
 // Mock product data for CoffeeFlow. Each product belongs to a category via
 // `categoryId` (matching the `id` in ./coffeeData.ts). Prices are in TND.
 
-export const products = [
-  // ── Espresso Classics (categoryId: 1) ────────────────────────────────
+export interface ProductVariantOption {
+  id: string;
+  name: string;
+  priceDelta: number;
+}
+
+export interface ProductVariant {
+  name: string;
+  options: ProductVariantOption[];
+}
+
+export interface Product {
+  id: number;
+  categoryId: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  variants: ProductVariant[];
+}
+
+export const products: Product[] = [
+  // ── Cafés (categoryId: 1) ─────────────────────────────────────────────
   {
     id: 101,
     categoryId: 1,
-    name: "Classic Espresso",
-    price: 2.5,
-    image:
-      "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=300&q=80",
-    description: "A bold single shot pulled from our signature dark roast.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "single", name: "Single", priceDelta: 0 },
-          { id: "double", name: "Double", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Temperature",
-        options: [
-          { id: "hot", name: "Hot", priceDelta: 0 },
-          { id: "iced", name: "Iced", priceDelta: 0 },
-        ],
-      },
-    ],
-  },
-  {
-    id: 102,
-    categoryId: 1,
-    name: "Double Espresso",
-    price: 3.5,
-    image:
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=300&q=80",
-    description: "Two rich shots for a serious caffeine kick.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "single", name: "Single", priceDelta: 0 },
-          { id: "double", name: "Double", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Extra Shot",
-        options: [
-          { id: "none", name: "None", priceDelta: 0 },
-          { id: "one", name: "+1 Shot", priceDelta: 0.8 },
-        ],
-      },
-    ],
-  },
-  {
-    id: 103,
-    categoryId: 1,
-    name: "Cappuccino",
+    name: "Express",
     price: 4.0,
     image:
-      "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=300&q=80",
-    description: "Espresso with velvety steamed milk and a thick foam cap.",
+      "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=300&q=80",
+    description: "Un express préparé à la demande, simple ou double.",
     variants: [
       {
-        name: "Size",
+        name: "Type",
         options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
+          { id: "single", name: "Simple", priceDelta: 0 },
+          { id: "double", name: "Double", priceDelta: 2.0 },
         ],
       },
       {
-        name: "Milk",
+        name: "Saveur",
         options: [
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
-          { id: "almond", name: "Almond", priceDelta: 0.5 },
+          { id: "nature", name: "Nature", priceDelta: 0 },
+          { id: "caramel", name: "Caramel", priceDelta: 1.0 },
+          { id: "nestle", name: "Nestlé", priceDelta: 1.0 },
         ],
       },
     ],
   },
   {
-    id: 104,
+    id: 106,
     categoryId: 1,
-    name: "Caffè Latte",
-    price: 4.5,
+    name: "Cappucin",
+    price: 5.0,
+    image:
+      "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=300&q=80",
+    description: "Un expresso adouci avec du lait, avec ou sans mousse.",
+    variants: [
+      {
+        name: "Mousse",
+        options: [
+          { id: "with", name: "Avec mousse", priceDelta: 0 },
+          { id: "without", name: "Sans mousse", priceDelta: 0 },
+        ],
+      },
+      {
+        name: "Saveur",
+        options: [
+          { id: "nature", name: "Nature", priceDelta: 0 },
+          { id: "nestle", name: "Nestlé", priceDelta: 1.0 },
+          { id: "chocolat", name: "Chocolat", priceDelta: 1.0 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 107,
+    categoryId: 1,
+    name: "Café au lait",
+    price: 5.0,
     image:
       "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=80",
-    description: "Smooth espresso balanced with silky steamed milk.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Milk",
-        options: [
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
-          { id: "almond", name: "Almond", priceDelta: 0.5 },
-        ],
-      },
-    ],
+    description: "Un café au lait préparé avec une poudre de café différente.",
+    variants: [],
   },
   {
-    id: 105,
+    id: 108,
     categoryId: 1,
-    name: "Flat White",
-    price: 4.8,
+    name: "Cappucino",
+    price: 6.0,
     image:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=300&q=80",
-    description: "Double ristretto with micro-foamed milk, served short.",
-    variants: [
-      {
-        name: "Size",
-        options: [
-          { id: "small", name: "Small", priceDelta: 0 },
-          { id: "medium", name: "Medium", priceDelta: 0.5 },
-          { id: "large", name: "Large", priceDelta: 1.0 },
-        ],
-      },
-      {
-        name: "Milk",
-        options: [
-          { id: "whole", name: "Whole", priceDelta: 0 },
-          { id: "oat", name: "Oat", priceDelta: 0.5 },
-          { id: "almond", name: "Almond", priceDelta: 0.5 },
-        ],
-      },
-    ],
+      "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=300&q=80",
+    description: "Un cappucino onctueux, préparé avec soin.",
+    variants: [],
+  },
+  {
+    id: 109,
+    categoryId: 1,
+    name: "Café crème",
+    price: 8.0,
+    image:
+      "https://media.istockphoto.com/id/2220401154/photo/coffee-cup-and-coffee-beans-on-wooden-table-espresso-crema-coffee-cup-aromatic.jpg?s=612x612&w=0&k=20&c=M71IHjkETXUNqz-Lda5kSIg1KVmpK_XFbf-GvIg_kIQ=",
+    description: "Un café crème généreux et savoureux.",
+    variants: [],
   },
 
   // ── Cold Brews & Iced (categoryId: 2) ────────────────────────────────

@@ -10,6 +10,12 @@ import OrderConfirmedPage from "./pages/OrderConfirmedPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import AdminPage from "./pages/AdminPage";
 import AddTablePage from "./pages/AddTablePage";
+import EditTablePage from "./pages/EditTablePage";
+import AddCategoryPage from "./pages/AddCategoryPage";
+import EditCategoryPage from "./pages/EditCategoryPage";
+import AddProductPage from "./pages/AddProductPage";
+import EditProductPage from "./pages/EditProductPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
 
 // Router shell. Each page is registered as a <Route> here. Navigation between
 // pages is done declaratively with <Link> or imperatively with useNavigate().
@@ -28,8 +34,14 @@ const App = () => {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/tables" element={<AdminPage />} />
         <Route path="/admin/tables/new" element={<AddTablePage />} />
+        <Route path="/admin/tables/:id/edit" element={<EditTablePage />} />
+        <Route path="/admin/categories/new" element={<AddCategoryPage />} />
+        <Route path="/admin/categories/:id/edit" element={<EditCategoryPage />} />
+        <Route path="/admin/products/new" element={<AddProductPage />} />
+        <Route path="/admin/products/:id/edit" element={<EditProductPage />} />
         <Route path="/admin/products" element={<AdminPage />} />
         <Route path="/admin/orders" element={<AdminPage />} />
+        <Route path="/admin/orders/:id" element={<OrderDetailPage />} />
       </Routes>
     </div>
   );

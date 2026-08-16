@@ -1,10 +1,16 @@
 import React from "react";
 import CategoryCard from "./CategoryCard";
 import { categories } from "../data/coffeeData";
+import { products } from "../data/products";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const CategoryList = () => {
   const { t } = useLanguage();
+
+  // Compute the real number of products per category from the products data.
+  const countFor = (categoryId: number) =>
+    products.filter((p) => p.categoryId === categoryId).length;
+
   return (
     // Cards are capped at a comfortable max-width and centered so they don't
     // stretch edge-to-edge on wide screens, while still filling mobile widths
@@ -31,7 +37,7 @@ const CategoryList = () => {
                 key={category.id}
                 id={category.id}
                 name={category.name}
-                totalProducts={category.totalProducts}
+                totalProducts={countFor(category.id)}
                 image={category.image}
                 emoji={category.emoji}
               />

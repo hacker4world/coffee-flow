@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useCart, MAX_QUANTITY } from "../context/CartContext";
@@ -40,13 +40,6 @@ const ProductDetailPage = () => {
   // Whether the multi-variant modal is open (when quantity > 1).
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Carousel state for the product image gallery.
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const startX = useRef(0);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   // When editing an existing cart line, pre-populate the form with its values.
   useEffect(() => {
     if (editingItem) {
@@ -54,33 +47,6 @@ const ProductDetailPage = () => {
       setQuantity(editingItem.quantity);
     }
   }, [editingItem]);
-
-  const handleDragStart = (clientX) => {
-    startX.current = clientX;
-    setIsDragging(true);
-  };
-
-  const handleDragMove = (clientX) => {
-    if (!isDragging) return;
-    setDragOffset(clientX - startX.current);
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    const containerWidth = containerRef.current
-      ? containerRef.current.offsetWidth
-      : 0;
-    const threshold = containerWidth / 4;
-
-    if (dragOffset < -threshold && currentIndex < gallery.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    } else if (dragOffset > threshold && currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-    setDragOffset(0);
-  };
-
-  const transformValue = `translateX(calc(-${currentIndex * 100}% + ${dragOffset}px))`;
 
   if (!product) {
     return (
@@ -101,14 +67,6 @@ const ProductDetailPage = () => {
   product.variants?.forEach((group) => {
     defaultOptions[group.name] = group.options[0].id;
   });
-
-  // Build a small gallery of images for the product (its own image + a couple
-  // of related coffee shots) so the carousel has multiple slides.
-  const gallery = [
-    product.image,
-    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?auto=format&fit=crop&w=1200&q=80",
-  ];
 
   const effectiveOptions = { ...defaultOptions, ...selectedOptions };
 
@@ -161,40 +119,15 @@ const ProductDetailPage = () => {
 
   return (
     <div className="relative w-full max-w-md mx-auto bg-gradient-to-b from-stone-100 to-amber-100 min-h-screen shadow-xl">
-      {/* Image carousel with back button */}
-      <div
-        ref={containerRef}
-        className="relative h-64 overflow-hidden select-none cursor-grab active:cursor-grabbing"
-        onMouseDown={(e) => handleDragStart(e.clientX)}
-        onMouseMove={(e) => handleDragMove(e.clientX)}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
-        onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
-        onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
-        onTouchEnd={handleDragEnd}
-      >
-        <div
-          className="flex h-full"
-          style={{
-            transform: transformValue,
-            transition: isDragging ? "none" : "transform 0.5s ease-out",
-          }}
-        >
-          {gallery.map((image, index) => (
-            <div
-              key={index}
-              className="shrink-0 w-full h-full relative pointer-events-none"
-            >
-              <img
-                src={image}
-                alt={`${product.name} view ${index + 1}`}
-                className="absolute inset-0 w-full h-full object-cover"
-                draggable="false"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20"></div>
-            </div>
-          ))}
-        </div>
+      {/* Product image with back button */}
+      <div className="relative h-64 overflow-hidden">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="absolute inset-0 w-full h-full object-cover"
+          draggable="false"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20"></div>
 
         {/* Back button */}
         <button
@@ -231,7 +164,8 @@ const ProductDetailPage = () => {
         {editingItem && (
           <span className="absolute top-4 left-16 px-3 py-1 rounded-full bg-amber-600 text-white text-xs font-semibold z-10 shadow-md">
             {t("detail.inCart")}
-          </span>        )}
+          </span>
+        )}
 
         {/* Product name badge at the bottom of the image */}
         <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
@@ -240,19 +174,6 @@ const ProductDetailPage = () => {
               {product.name}
             </span>
           </span>
-        </div>
-
-        {/* Pagination dots */}
-        <div className="absolute bottom-3 right-4 z-10 flex items-center gap-1.5">
-          {gallery.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                currentIndex === index ? "w-4 bg-white" : "w-1.5 bg-white/50"
-              }`}
-            />
-          ))}
         </div>
       </div>
 

@@ -1,33 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTables } from "../context/TableContext";
+import { useProducts } from "../context/ProductContext";
 import { useLanguage } from "../i18n/LanguageContext";
 
-// Stylized table visual used in both list and grid variants. Shows the
-// table's photo with the table number overlaid in a corner badge.
-const TableVisual = ({ image, number, size = "md", alt }) => {
-  const sizeClass =
-    size === "lg"
-      ? "h-24 w-24 rounded-2xl"
-      : "h-20 w-20 rounded-xl";
-  return (
-    <div className={`${sizeClass} relative flex-shrink-0 overflow-hidden shadow-sm`}>
-      <img
-        src={image}
-        alt={alt}
-        className="h-full w-full object-cover"
-      />
-      {/* Number badge */}
-      <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-amber-700/90 text-white text-xs font-bold leading-none">
-        {number}
-      </span>
-    </div>
-  );
-};
-
-const TableList = () => {
+// Admin list of products. Mirrors the TableList/CategoryList layout: a heading
+// with a list/grid view toggle and cards showing each product's image, name,
+// description and price. Data comes from the ProductContext.
+const AdminProductList = () => {
   const { t } = useLanguage();
-  const { tables } = useTables();
+  const { products } = useProducts();
   const navigate = useNavigate();
   const [view, setView] = useState("list"); // "list" | "grid"
 
@@ -38,7 +19,7 @@ const TableList = () => {
         <div className="flex items-center gap-2">
           <span className="w-1 h-6 rounded-full bg-amber-700"></span>
           <h2 className="text-xl font-display font-bold text-stone-800 tracking-tight">
-            {t("admin.tables")}
+            {t("admin.products")}
           </h2>
         </div>
 
@@ -90,35 +71,32 @@ const TableList = () => {
         </div>
       </div>
 
-      {/* Table list */}
+      {/* Product list */}
       {view === "grid" ? (
         <div className="grid grid-cols-2 gap-3">
-          {tables.map((table) => (
+          {products.map((product) => (
             <div
-              key={table.id}
-              onClick={() => navigate(`/admin/tables/${table.id}/edit`)}
+              key={product.id}
+              onClick={() => navigate(`/admin/products/${product.id}/edit`)}
               className="relative bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-stone-100 active:scale-[0.98] transition-transform cursor-pointer"
             >
               {/* Image fills the top of the card */}
               <div className="relative">
                 <img
-                  src={table.image}
-                  alt={t("admin.tableImageAlt", { n: table.number })}
+                  src={product.image}
+                  alt={product.name}
                   className="w-full h-36 object-cover"
                 />
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-amber-700/90 text-white text-xs font-bold shadow-md">
-                  {table.number}
-                </span>
               </div>
               <div className="p-3">
                 <h3 className="font-display font-bold text-stone-800 tracking-tight leading-tight">
-                  {t("admin.tableNumber", { n: table.number })}
+                  {product.name}
                 </h3>
-                <p className="text-xs text-stone-500 mt-0.5">
-                  {t("admin.tableCapacity", { n: table.capacity })}
+                <p className="text-xs text-stone-500 mt-0.5 line-clamp-2">
+                  {product.description}
                 </p>
-                <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-semibold">
-                  {t("admin.tableAvailable")}
+                <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-semibold">
+                  {product.price.toFixed(2)} TND
                 </span>
               </div>
             </div>
@@ -126,35 +104,36 @@ const TableList = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          {tables.map((table) => (
+          {products.map((product) => (
             <div
-              key={table.id}
-              onClick={() => navigate(`/admin/tables/${table.id}/edit`)}
+              key={product.id}
+              onClick={() => navigate(`/admin/products/${product.id}/edit`)}
               className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-sm ring-1 ring-stone-100 active:scale-[0.98] transition-transform cursor-pointer"
             >
-              <TableVisual
-                image={table.image}
-                number={table.number}
-                alt={t("admin.tableImageAlt", { n: table.number })}
-              />
+              <div className="h-20 w-20 rounded-xl relative flex-shrink-0 overflow-hidden shadow-sm">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-display font-bold text-stone-800 tracking-tight">
-                  {t("admin.tableNumber", { n: table.number })}
+                  {product.name}
                 </h3>
-                <p className="text-xs text-stone-500 mt-0.5">
-                  {t("admin.tableCapacity", { n: table.capacity })}
+                <p className="text-xs text-stone-500 mt-0.5 line-clamp-2">
+                  {product.description}
                 </p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold flex-shrink-0">
-                {t("admin.tableAvailable")}
+              <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold flex-shrink-0">
+                {product.price.toFixed(2)} TND
               </span>
             </div>
           ))}
         </div>
       )}
-
     </section>
   );
 };
 
-export default TableList;
+export default AdminProductList;
